@@ -1,0 +1,109 @@
+>>source file
+
+
+1000    COPY     START   1000               
+1000    FIRST    STL     RETADR                 141030
+1003    CLOOP    JSUB    RDREC                  482036
+1006             LDA     LENGTH                 01033
+1009             COMP    ZERO                   28102d
+100c             JEQ     ENDFIL                 301015
+100f             JSUB    WRREC                  48205b
+1012             J       CLOOP                  3c1003
+1015    ENDFIL   LDA     EOF                    01027
+1018             STA     BUFFER                 c1036
+101b             LDA     THREE                  0102a
+101e             STA     LENGTH                 c1033
+1021             JSUB    WRREC                  48205b
+1024             LDL     RETADR                 81030
+1027    EOF      BYTE    C'EOF'                 454f46
+102a    THREE    WORD    3                      000003
+102d    ZERO     WORD    0                      000000
+1030    RETADR   RESW    1
+1033    LENGTH   RESW    1
+1036    BUFFER   RESB    4096
+2036    RDREC    LDX     ZERO                   4102d
+2039             LDA     ZERO                   0102d
+203c    RLOOP    TD      INPUT                  e02057
+203f             JEQ     RLOOP                  30203c
+2042             RD      INPUT                  d82057
+2045             COMP    ZERO                   28102d
+2048             JEQ     EXIT                   302054
+204b             STCH    BUFFER,X               549036
+204e             TIX     MAXLEN                 2c2058
+2051             JLT     RLOOP                  38203c
+2054    EXIT     STX     LENGTH                 101033
+2057    INPUT    BYTE    X'F1'                  F1
+2058    MAXLEN   WORD    4096                   001000
+205b    WRREC    LDX     ZERO                   4102d
+205e    WLOOP    TD      OUTPUT                 e02070
+2061             JEQ     WLOOP                  30205e
+2064             LDCH    BUFFER,X               509036
+2067             WD      OUTPUT                 dc2070
+206a             TIX     LENGTH                 2c1033
+206d             JLT     WLOOP                  38205e
+2070    OUTPUT   BYTE    X'05'		                05
+2071             END     FIRST
+
+
+
+>>symbol table
+
+
+Symbol    Address
+ZERO      102d
+INPUT     2057
+WRREC     205b
+OUTPUT    2070
+ENDFIL    1015
+LENGTH    1033
+COPY      0000
+FIRST     1000
+RETADR    1030
+BUFFER    1036
+RLOOP     203c
+MAXLEN    2058
+CLOOP     1003
+WLOOP     205e
+EOF       1027
+RDREC     2036
+EXIT      2054
+THREE     102a
+
+
+
+>>Optable
+
+
+Opcode  Code
+
+
+ADD     18
+STA     c
+TIX     2c
+LDA     0
+J       3c
+STL     14
+WD      dc
+COMP    28
+JLT     38
+LDL     8
+STX     10
+STCH    54
+LDX     4
+SUB     1c
+OR      44
+MUL     20
+RSUB    4c
+DIV     24
+TD      e0
+RD      d8
+JSUB    48
+JGT     34
+AND     40
+JEQ     30
+LDCH    50
+
+
+
+>>program Length
+1072
